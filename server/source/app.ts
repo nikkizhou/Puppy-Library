@@ -2,7 +2,7 @@ import express, { response } from "express";
 import { Request, Response, Application } from 'express';
 import { collections } from "./services/mongoDb";
 import Puppy from "./models/puppy";
-import { getPuppies,getPuppy, addOnePuppy,updateOnePuppy,deleteOnePuppy } from "./controllers/puppies";
+import { getPuppies, getPuppy, addOnePuppy, updateOnePuppy, deleteOnePuppy, addManyPuppies } from "./controllers/puppies";
 import cors from 'cors'
 import { connectToDatabase } from "./services/mongoDb"
 
@@ -19,6 +19,7 @@ connectToDatabase()
     app.post('/api/puppies', addOnePuppy);
     app.put('/api/puppies/:id', updateOnePuppy);
     app.delete('/api/puppies/:id', deleteOnePuppy);
+    app.post('/api/puppies/many', addManyPuppies);
   })
   .catch((error: Error) => {
     console.error("Database connection failed", error);

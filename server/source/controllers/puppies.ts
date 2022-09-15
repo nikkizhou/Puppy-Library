@@ -55,6 +55,13 @@ export const addOnePuppy = async (req: Request, res: Response) => {
   })
 };
 
+export const addManyPuppies = async (req: Request, res: Response) => {
+  await asyncWrapper(req, res, 200, async (id: number) => { 
+    console.log(req?.body);
+    collections.puppies?.insertMany(req?.body)
+  }
+)};
+
 export const updateOnePuppy = async (req: Request, res: Response) => {
   await asyncWrapper(req, res, 200,(id: number) =>
     collections.puppies?.findOneAndUpdate({ id }, { $set: req?.body }));

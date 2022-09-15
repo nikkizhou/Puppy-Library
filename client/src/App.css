@@ -1,0 +1,77 @@
+.App {
+  text-align: center;
+}
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.puppyContainer{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.puppyCard{
+  display: flex;
+  flex-direction: column;
+  border: white solid 1px;
+  border-radius: 25px;
+  margin:1rem;
+  padding: 1rem;
+}
+
+
+.puppyCard_details{
+  margin-top: -1.7rem;
+}
+
+.puppyCard_buttons{
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.formContainer{
+  display: flex;
+  flex-direction: column;
+  border: white solid 1px;
+  border-radius: 25px;
+  width: 60vw;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+  margin:3rem;
+
+}
+
+.form{
+  width: 60%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+input{
+  height: 25px;
+}
+
+.btn{
+  height: 35px;
+  width: 120px;
+  align-self: flex-end;
+}
+
+
+.puppyCardDetail{
+  align-self: center;
+
+}
