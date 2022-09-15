@@ -29,13 +29,31 @@
 }
 
 
-.puppyCard_details{
+.puppyCard_desc{
   margin-top: -1.7rem;
 }
 
 .puppyCard_buttons{
   display: flex;
   justify-content: space-around;
+}
+
+.puppyCardDetail{
+  margin-top: -30rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(94, 95, 96, 0.835);
+}
+
+.puppyCardDetail_block{
+  width: 30%;
+  height: auto;
+  background-color: #282c34;
+  border: #fbfbfc solid 1px;
+  border-radius: 25px;
 }
 
 

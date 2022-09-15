@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { Puppy } from '../interfaces';
 
-function Form(renderNewPuppy:any) {
+interface Props{
+  renderNewPuppy: Function
+}
+
+function Form({renderNewPuppy}:Props) {
   const [puppy, setPuppy] = useState({name:'', bday:0, breed:''});
 
   const addOnePuppy = async () => {
@@ -10,6 +14,8 @@ function Form(renderNewPuppy:any) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(puppy)
     })
+      .then(res => res.json())
+      .then(newPuppy => renderNewPuppy(newPuppy))
       .catch(err => console.log(err))
   }
 
@@ -19,9 +25,7 @@ function Form(renderNewPuppy:any) {
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    puppy.name && addOnePuppy();
-    alert('The puppy has been seccessfully added!')
-    renderNewPuppy(puppy);
+    addOnePuppy() 
   }
 
   return (

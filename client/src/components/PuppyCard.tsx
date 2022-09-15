@@ -4,40 +4,33 @@ import PuppyCardDetail from './PuppyCardDetail';
 
 interface Props{
   puppy: Puppy,
-  changePuppyId: Function
+  changePuppyId: Function,
+  renderDeletePuppy:Function
 }
 
-function PuppyCard({ puppy, changePuppyId }:Props) {
-  const { name, id, bday, breed } = puppy
-  const [showDetail, setShowDetail] = useState(false);
-
-  console.log("id in PuppyCard ",id);
-  console.log("puppy in PuppyCard ", puppy);
-  
+function PuppyCard({ puppy, changePuppyId, renderDeletePuppy }: Props) {
+  const { name, id} = puppy
 
   const deleteOnePuppy = async (id:number) => {
     fetch(`/api/puppies/${id}`, {method: 'DELETE'})
       .catch(err => console.log(err))
-    alert('The puppy is deleted from library, refresh to see update!')
+    
+    renderDeletePuppy(id);
   }
 
-  
+
   return (
-    <>
     <div className='puppyCard'>
-      <div className='puppyCard_details'>
+      <div className='puppyCard_desc'>
         <p>Id: {id}</p>
         <p>Name: {name}</p>
       </div>
       <div className='puppyCard_buttons'>
-        <button onClick={()=>deleteOnePuppy(id)}>Delete</button>
+        <button onClick={() => deleteOnePuppy(id)}>Delete</button>
         <button>Edit</button>
-          <button onClick={() => changePuppyId(id)}>Details</button>
+        <button onClick={() => changePuppyId(id)}>Details</button>
       </div>
     </div>
-    
-
-  </>
   );
 }
 
