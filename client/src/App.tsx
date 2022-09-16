@@ -4,21 +4,29 @@ import PuppyCard from './components/PuppyCard'
 import { Puppy } from './interfaces';
 import Form from './components/Form';
 import PuppyCardDetail from './components/PuppyCardDetail';
+import PuppyCardEditing from './components/PuppyCardEditing';
+import clone from 'clone'
 
 
 function App() {
   const [puppies, setPuppies] = useState<Puppy[]>([])
-  const [puppyId, setPuppyId] = useState<number>();
+  const [detailedPuppyId, setDetailedPuppyId] = useState<number>();
+  const [editedPuppyId, setEditedPuppyId] = useState<number>();
   
-  const changePuppyId: Function = (id: number) => setPuppyId(id);
-  const detailedPuppy: Puppy = puppies?.find(p => p.id == puppyId ) as Puppy;
+  const changeDetailedPuppyId: Function = (id: number) => setDetailedPuppyId(id);
+  const changeEditedPuppyId: Function = (id: number) => setEditedPuppyId(id);
+
+  const detailedPuppy: Puppy = puppies?.find(p => p.id == detailedPuppyId ) as Puppy;
+  const editedPuppy: Puppy = puppies?.find(p => p.id == editedPuppyId) as Puppy;
+  
   const renderNewPuppy: Function = (newPuppy: Puppy) => setPuppies([...puppies, newPuppy])
   const renderDeletePuppy: Function = (id: number) => setPuppies(puppies.filter(p => p.id != id));
-
-  // puppies && console.log(puppies, 'puppies in App');
-  // detailedPuppy && console.log(detailedPuppy, 'detailedPuppy in App');
-  // console.log(puppyId, "puppyId  in App");
-  
+  const renderEditedPuppy: Function = (id: number, newPuppy:Puppy) => {
+    const index: number = puppies.findIndex(p => p.id == editedPuppyId);
+    const newPuppies = clone(puppies);
+    newPuppies[index] = newPuppy;
+    setPuppies(newPuppies);
+  }
   
   useEffect(() => {
     const fetchPuppies = async () => {
@@ -32,19 +40,22 @@ function App() {
   return (
     <div className="App">
       <header className='App-header'>
-        <h1>Puppy Library</h1>
+        <h1>Puppy Library🐕</h1>
         <main className='puppyContainer'>
           {puppies?.map(p =>
             <PuppyCard
-            puppy={p}
-            changePuppyId={changePuppyId}
-            renderDeletePuppy={renderDeletePuppy} />)}
+              key={p.id}
+              puppy={p}
+              changeDetailedPuppyId={changeDetailedPuppyId}
+              renderDeletePuppy={renderDeletePuppy}
+              changeEditedPuppyId={changeEditedPuppyId } />)}
         </main>
-        {puppyId &&
-          <PuppyCardDetail
-          puppy={detailedPuppy}
-          changePuppyId={changePuppyId} />}
-        <Form renderNewPuppy={renderNewPuppy} />
+      {!detailedPuppyId && !editedPuppyId && <Form renderNewPuppy={renderNewPuppy} />}
+      {detailedPuppyId && <PuppyCardDetail puppy={detailedPuppy} changeDetailedPuppyId={changeDetailedPuppyId} />}
+      {editedPuppyId && <PuppyCardEditing
+        puppy={editedPuppy}
+        changeEditedPuppyId={changeEditedPuppyId}
+        renderEditedPuppy={renderEditedPuppy } />}
       </header>
     </div>
   );

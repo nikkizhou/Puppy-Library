@@ -1,7 +1,5 @@
-import express, { response } from "express";
-import { Request, Response, Application } from 'express';
-import { collections } from "./services/mongoDb";
-import Puppy from "./models/puppy";
+import express from "express";
+import { Application } from 'express';
 import { getPuppies, getPuppy, addOnePuppy, updateOnePuppy, deleteOnePuppy, addManyPuppies } from "./controllers/puppies";
 import cors from 'cors'
 import { connectToDatabase } from "./services/mongoDb"

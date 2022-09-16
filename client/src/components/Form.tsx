@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Puppy } from '../interfaces';
+import { InputField1 } from './InputField'
+import FormDatePicker from './FormDatePicker'
 
 interface Props{
   renderNewPuppy: Function
@@ -19,6 +21,8 @@ function Form({renderNewPuppy}:Props) {
       .catch(err => console.log(err))
   }
 
+  const changeBday=(bday:number)=>setPuppy({...puppy,bday})
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPuppy({ ...puppy, [event.target.name]: event.target.value });
   };
@@ -30,30 +34,12 @@ function Form({renderNewPuppy}:Props) {
 
   return (
     <div className="formContainer">
-      <h2>Add Your Own Puppy</h2>
+      <h2>Add Your Own Puppy🐕‍🦺</h2>
       <form onSubmit={submitForm} className="form">
-        <input
-          onChange={onChange}
-          type="text"
-          placeholder="name:"
-          name="name"
-          required
-        />
-        <input
-          onChange={onChange}
-          type="text"
-          placeholder="breed:"
-          name="breed"
-          required
-        />
-        <input
-          onChange={onChange}
-          type="number"
-          placeholder="birthday:"
-          name="bday"
-          required
-        />
-        <button type="submit" className="btn">Add a dog</button>
+        <InputField1 category="name" onChange={onChange} />
+        <InputField1 category="breed" onChange={onChange} />
+        <FormDatePicker changeBday={changeBday } />
+        <button type="submit" className="btn">Add a puppy</button>
       </form>
     </div>
   );

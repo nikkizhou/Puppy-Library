@@ -2,9 +2,11 @@ import type { WithId, Document } from 'mongodb'
 
 interface Puppy extends WithId<Document>{
     name: string,
-    bday: number,
+    bday: string,
     breed: string,
-    id: number
+    id: number,
+    image?:string
+    
 }
 
 export = Puppy

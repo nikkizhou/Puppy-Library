@@ -1,6 +1,7 @@
 export interface Puppy {
   name: string,
-  bday: number,
+  bday: number|string,
   breed: string,
-  id: number
+  id?: number,
+  image?:string
 }
