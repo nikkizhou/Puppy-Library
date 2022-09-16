@@ -80,6 +80,7 @@ p{
   justify-content: center;
   align-items: center;
   background-color: rgba(94, 95, 96, 0.835);
+  z-index: 1;
 }
 
 .puppyCardEditing_block {
@@ -87,7 +88,8 @@ p{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 35vw;
+  margin-top: 30%;
   height: auto;
   background-color: #282c34;
   border: #fbfbfc solid 1px;
@@ -193,10 +195,23 @@ img{
   }
 
   .puppyCardDetail {
+    margin-top: -340%;
+    height: 300vh;
+  }
+
+  .puppyCardEditing{
     margin-top: -370%;
     height: 300vh;
-    z-index: 1;
+  }
 
+  .puppyCardEditing_block{
+    width: 90%;
+    margin-top: 100%;
+  }
+
+  img {
+    width: 50vw;
+    height: auto;
   }
 
 }

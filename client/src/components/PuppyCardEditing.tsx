@@ -13,12 +13,14 @@ function PuppyCardEditing({ puppy, changeEditedPuppyId, renderEditedPuppy }: Pro
   const [newPuppy, setNewPuppy] = useState(puppy);
 
   const updatePuppy = async () => {
+    console.log(newPuppy.name, 'newPuppy in updatePuppy');
+    
     fetch(`/api/puppies/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newPuppy)
+      body: JSON.stringify({name:newPuppy.name,bday:newPuppy.bday,bree:newPuppy.breed})
     }).catch(err => console.log(err))
   }
 
