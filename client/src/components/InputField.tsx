@@ -8,9 +8,8 @@ interface Props{
   value?: string|number
 }
 
+const capitalizeFirstChar = (str:string) => str.charAt(0).toUpperCase() + str.slice(1);
 export function InputField1({ category, onChange }: Props) {
-  const capitalizeFirstChar = (str:string) => str.charAt(0).toUpperCase() + str.slice(1);
-    
   
   return (
     <div className='inputContainer'>
@@ -28,7 +27,7 @@ export function InputField1({ category, onChange }: Props) {
 export function InputField2({ category, onChange, value }: Props) {
   return (
     <div className='inputContainer'>
-      <label htmlFor={category}>{category}</label>
+      <label htmlFor={category}>{capitalizeFirstChar(category)}</label>
       <input
         onChange={onChange}
         name={category}

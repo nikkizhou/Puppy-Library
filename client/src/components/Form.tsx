@@ -1,35 +1,18 @@
 import React, { useState } from 'react'
-import { Puppy } from '../interfaces';
 import { InputField1 } from './InputField'
 import FormDatePicker from './FormDatePicker'
 
-interface Props{
-  renderNewPuppy: Function
-}
-
-function Form({renderNewPuppy}:Props) {
-  const [puppy, setPuppy] = useState({name:'', bday:0, breed:''});
-
-  const addOnePuppy = async () => {
-    fetch('/api/puppies', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(puppy)
-    })
-      .then(res => res.json())
-      .then(newPuppy => renderNewPuppy(newPuppy))
-      .catch(err => console.log(err))
-  }
-
+function Form({ addPupppy }: { addPupppy: Function }) {
+  const [puppy, setPuppy] = useState({ name: '', bday: 0, breed: '' });
+  
   const changeBday=(bday:number)=>setPuppy({...puppy,bday})
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPuppy({ ...puppy, [event.target.name]: event.target.value });
   };
 
   const submitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addOnePuppy() 
+    addPupppy(puppy) 
   }
 
   return (

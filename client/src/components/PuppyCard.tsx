@@ -1,35 +1,54 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { Puppy } from '../interfaces';
 import PuppyCardDetail from './PuppyCardDetail';
+import PuppyCardEditing from '../components/PuppyCardEditing';
+
 
 interface Props{
   puppy: Puppy,
-  changeDetailedPuppyId: Function,
-  renderDeletePuppy: Function,
-  changeEditedPuppyId:Function
+  deletePuppy: Function,
+  updatePuppy: Function
 }
 
-function PuppyCard({ puppy, changeDetailedPuppyId, renderDeletePuppy, changeEditedPuppyId }: Props) {
-  const { name, id} = puppy
-
-  const deleteOnePuppy = async (id:number) => {
-    fetch(`/api/puppies/${id}`, {method: 'DELETE'})
-      .catch(err => console.log(err))
-    renderDeletePuppy(id);
-  }
+function PuppyCard({ puppy, deletePuppy, updatePuppy }: Props) {
+  const { name, id} = puppy ||{}
+  const [isEditing, setIsEditing] = useState<boolean>();
+  const [showDetails, setShowDetails] = useState<boolean>();
 
   return (
-    <div className='puppyCard'>
+    <>
+      {(isEditing || showDetails) && <div className='coverLayer'></div>}
+      
+      {isEditing && <PuppyCardEditing
+        puppy={puppy}
+        updatePuppy={updatePuppy}
+        closeEditing={() => setIsEditing(false)}
+      />}
+
+      {showDetails && <PuppyCardDetail
+        puppy={puppy}
+        closeDetails={() => setShowDetails(false)}
+      />}
+
+      <div className='puppyCard'>
+      <button
+        className='button_delete'
+          onClick={() => deletePuppy(id as number)}>
+        <i className='fa fa-trash'/>
+      </button>
       <div className='puppyCard_desc'>
-        <p>Id: {id}</p>
+          <p>PuppyID: {id}</p>
         <p>Name: {name}</p>
       </div>
       <div className='puppyCard_buttons'>
-        <button onClick={() => deleteOnePuppy(id as number)}>Delete</button>
-        <button onClick={() => changeEditedPuppyId(id)}>Edit</button>
-        <button onClick={() => changeDetailedPuppyId(id)}>Details</button>
+        <button
+          onClick={() => setIsEditing(true)}>
+          <i className='fa fa-edit' />  Edit</button>
+        <button onClick={() => setShowDetails(true)}><i className='fa fa-info'/>  Details</button>
       </div>
-    </div>
+      </div>
+     
+    </>
   );
 }
 

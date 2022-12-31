@@ -1,9 +1,5 @@
 .App {
   text-align: center;
-}
-
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -12,26 +8,48 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  overflow: hidden;
 }
+
+button{
+  background-color: #282c34;
+  color: white;
+  border: #fbfbfc solid 1px;
+  border-radius: 10%;
+  z-index: 1;
+  height: 23px
+}
+
+button:hover{
+  background-color: white;
+  color: #282c34;
+}
+
+label{
+  width: 20%;
+}
+
 
 p{
   line-height: 0.8;
 }
 
 .puppyContainer{
+  position: relative;
   width: 75vw;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+
 .puppyCard{
+  position: relative;
   display: flex;
   flex-direction: column;
   border: white solid 1px;
   border-radius: 25px;
   margin:1rem;
   padding: 1rem;
-  
 }
 
 
@@ -39,23 +57,22 @@ p{
   margin-top: -1.7rem;
 }
 
+.button_delete{
+  align-self: flex-end;
+  justify-self: flex-start;
+}
+
+
 .puppyCard_buttons{
   display: flex;
   justify-content: space-around;
+  
 }
 
-.puppyCardDetail{
-  margin-top: -53rem;
-  width: 100vw;
-  height: 150vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(94, 95, 96, 0.835);
-  z-index: 1;
-}
 
-.puppyCardDetail_block{
+
+
+/* .puppyCardDetail{
   width: 13em;
   height: auto;
   display: flex;
@@ -65,43 +82,70 @@ p{
   background-color: #282c34;
   border: #fbfbfc solid 1px;
   border-radius: 25px;
-}
+} */
 
-.puppyCardDetail_block p{
+.puppyCardDetail p{
   line-height: 0;
 }
 
 
-.puppyCardEditing {
-  margin-top: -53rem;
-  width: 100vw;
-  height: 150vh;
+/* .puppyCardEditing {
+  position: absolute;
+  z-index: 3;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(94, 95, 96, 0.835);
-  z-index: 1;
+  margin-top: -2rem;
+  width: 100vw;
+  height:70vh;
+  
+} */
+
+.coverLayer{
+  position: absolute;
+  z-index: 4;
+  background-color: rgba(94, 95, 96, 0.835);
+  width: 150vw;
+  height: 400vw;
+  margin-left: -50vw;
+  margin-top: -100vh;
 }
 
-.puppyCardEditing_block {
+.puppyCardEditing, .puppyCardDetail {
+  position: absolute;
+  z-index: 4;
   display: flex;
+  align-self: center;
+  justify-self: center;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 35vw;
-  margin-top: 30%;
   height: auto;
   background-color: #282c34;
   border: #fbfbfc solid 1px;
   border-radius: 25px;
+  padding: 15px;
 }
 
-.form_editing_btnContainer{
-  margin:15px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+.puppyCardDetail button{
+  margin-bottom: -20px;
 }
+
+.form_editing{
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form_editing p{
+  margin-block-start: -1em;
+  margin-block-end: 0;
+}
+
 
 
 .formContainer{
@@ -126,8 +170,6 @@ p{
   align-items: flex-start;
   
 }
-
-
 
 .inputContainer{
   display: flex;
@@ -160,9 +202,6 @@ input{
   margin-bottom: 20px;
 }
 
-.puppyCardDetail{
-  align-self: center;
-}
 
 img{
   width: 20vw;
