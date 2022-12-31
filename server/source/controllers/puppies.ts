@@ -49,10 +49,8 @@ export const addOnePuppy = async (req: Request, res: Response) => {
 
     if (req.body) {
       const image = await fetchPuppyImg(req, res)
-      const newPuppy = { id, image, ...req.body }; //destructure
-      
+      const newPuppy = { id, image, ...req.body }; 
       await collections.puppies?.insertOne(newPuppy);
-      console.log(newPuppy," newPuppy in controller");
       return newPuppy;
     } else {
       res.json({error: "Failed to add. Please provide request body"});
