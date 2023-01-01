@@ -2,9 +2,9 @@ import express from "express";
 import { Application } from 'express';
 import { getPuppies, getPuppy, addOnePuppy, updateOnePuppy, deleteOnePuppy, addManyPuppies } from "./controllers/puppies";
 import cors from 'cors'
-import { connectToDatabase } from "./services/mongoDb"
 
 const app: Application = express();
+const port = 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -18,7 +18,6 @@ app.post('/api/puppies/many', addManyPuppies);
 
 
 
-const port = 5000;
 app.listen(port, (): void => {
   console.log(`Listening on port ${port}`);
 });
