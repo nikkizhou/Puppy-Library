@@ -1,5 +1,15 @@
 {
   "github": {
     "enabled": false
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://full-stack-puppies.vercel.app/api/:match*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
