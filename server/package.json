@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon source/server.ts",
-    "build": "rm -rf build/ && prettier --write source/ && tsc"
+    "start": "nodemon app.ts"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",

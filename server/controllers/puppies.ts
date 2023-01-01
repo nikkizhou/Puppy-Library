@@ -1,12 +1,15 @@
 import { Request, Response, Application } from 'express';
-import { collections } from "../services/mongoDb";
+import {  connectToDatabase } from "../services/mongoDb";
 import Puppy from "../models/puppy";
 import axios from 'axios';
 
-export const asyncWrapper = async (req: Request, res: Response, statusCode:number,cb:Function) => {
+
+export const asyncWrapper = async (req: Request, res: Response, statusCode: number, cb: Function) => {
+  const collections = await connectToDatabase();
+
   try {
     const id = Number(req?.params?.id);
-    const data = await cb(id)
+    const data = await cb(id,collections)
     return data ? res.status(statusCode).json(data) : res.status(500).json({ error: 'Failed to get data' })
   }
   catch (error) {
@@ -23,12 +26,12 @@ export const  getPuppies = async (req: Request, res: Response) => {
   // } catch (error) {
   //   error instanceof Error && res.status(500).json({error: error.message});
   // }
-  await asyncWrapper(req, res, 200, async () =>
+  await asyncWrapper(req, res, 200, async (id:number,collections:any) =>
     collections.puppies?.find({}).toArray())
 };
 
 export const getPuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 200, async (id: number) =>
+  await asyncWrapper(req, res, 200, async (id: number, collections: any) =>
     collections.puppies?.findOne({ id }))
 };
 
@@ -43,7 +46,7 @@ const fetchPuppyImg = async (req: Request, res: Response) => {
 }
 
 export const addOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 201, async () => {
+  await asyncWrapper(req, res, 201, async (_:any, collections: any) => {
     const puppies = (await collections.puppies?.find({}).toArray()) as Puppy[];
     const id = puppies.length==0? 1:puppies[puppies.length - 1].id + 1
 
@@ -59,19 +62,19 @@ export const addOnePuppy = async (req: Request, res: Response) => {
 };
 
 export const addManyPuppies = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 200, async (id: number) => { 
+  await asyncWrapper(req, res, 200, async (id: number, collections: any) => { 
     console.log(req?.body);
     collections.puppies?.insertMany(req?.body)
   }
 )};
 
 export const updateOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 200,(id: number) =>
+  await asyncWrapper(req, res, 200, (id: number, collections: any) =>
     collections.puppies?.findOneAndUpdate({ id }, { $set: req?.body })); //pay attention to set here
 };
 
 
 export const deleteOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 202, (id: number) =>
+  await asyncWrapper(req, res, 202, (id: number, collections: any) =>
     collections.puppies?.deleteOne({ id }))
 };
