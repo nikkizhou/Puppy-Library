@@ -154,21 +154,28 @@ p{
   border: white solid 1px;
   border-radius: 25px;
   width: 60vw;
-  height: 60vh;
+  height: 70vh;
   justify-content: center;
   align-items: center;
-  margin:3rem;
+  margin:2rem;
 
 }
 
 .form{
-  width: 60%;
+  width: 70%;
   height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
-  
+}
+
+.form p{
+  font-size: medium;
+  align-self: flex-start;
+  justify-self: flex-start;
+  text-align: left;
+  line-height: 110%;
 }
 
 .inputContainer{

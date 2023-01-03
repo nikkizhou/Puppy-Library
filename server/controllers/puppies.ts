@@ -3,29 +3,29 @@ import {  connectToDatabase } from "../services/mongoDb";
 import Puppy from "../models/puppy";
 import axios from 'axios';
 
-
-export const asyncWrapper = async (req: Request, res: Response, statusCode: number, cb: Function) => {
+const asyncWrapper = async (req: Request, res: Response, statusCode: number, cb: Function) => {
   const collections = await connectToDatabase();
+  const id = Number(req?.params?.id);
+  await cb(id, collections)
+    .then((data:any) => res.status(statusCode).json(data))
+    .catch((error:Error) => res.status(500).json({ error: error.message }))
+}
 
-  try {
-    const id = Number(req?.params?.id);
-    const data = await cb(id,collections)
-    return data ? res.status(statusCode).json(data) : res.status(500).json({ error: 'Failed to get data' })
-  }
-  catch (error) {
-    return error instanceof Error && res.status(400).json({ error: error.message });
-  }
+const badReq = (res:Response, operation: string) =>
+  res.status(400).json({ error: `Failed to ${operation}. Please provide request body` });
+
+const fetchPuppyImg = async (req: Request, res: Response) => {
+  const puppyBreed = encodeURI(req.body.breed); 
+  //const url = `https://api.unsplash.com/search/photos?query=${puppyBreed}&client_id=${process.env.UNSPLASH_API_KEY}`
+  const url = `https://dog.ceo/api/breed/${puppyBreed}/images/random`
+  const image: string = await axios.get(url)
+    // .then(result => result.data.results[1].urls.small)
+    .then((result: any) =>result.data.message)
+    .catch(err => console.log(err))
+  return image;
 }
 
 export const  getPuppies = async (req: Request, res: Response) => {
-  // try {
-  //   const puppies = (await collections.puppies?.find({}).toArray()) as Puppy[];
-  //   //console.log(puppies,"puppies in contronller");
-    
-  //   res.status(200).json(puppies);
-  // } catch (error) {
-  //   error instanceof Error && res.status(500).json({error: error.message});
-  // }
   await asyncWrapper(req, res, 200, async (id:number,collections:any) =>
     collections.puppies?.find({}).toArray())
 };
@@ -35,46 +35,41 @@ export const getPuppy = async (req: Request, res: Response) => {
     collections.puppies?.findOne({ id }))
 };
 
-const fetchPuppyImg = async (req: Request, res: Response) => {
-  const puppyBreed = req.body.breed
-  const url = `https://api.unsplash.com/search/photos?query=${puppyBreed}&client_id=${process.env.UNSPLASH_API_KEY}`
-  const image:string = await axios.get(url)
-    .then(result => result.data.results[1].urls.small)
-    .catch(err => console.log(err))
-  return image;
-  
-}
 
 export const addOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 201, async (_:any, collections: any) => {
+  await asyncWrapper(req, res, 201, async (_: any, collections: any) => {
+    if (!req.body) return badReq(res, 'add')
     const puppies = (await collections.puppies?.find({}).toArray()) as Puppy[];
     const id = puppies.length==0? 1:puppies[puppies.length - 1].id + 1
+    const image = await fetchPuppyImg(req, res)
+    const newPuppy = { id, image, ...req.body }; 
+    await collections.puppies?.insertOne(newPuppy);
+    return newPuppy;
 
-    if (req.body) {
-      const image = await fetchPuppyImg(req, res)
-      const newPuppy = { id, image, ...req.body }; 
-      await collections.puppies?.insertOne(newPuppy);
-      return newPuppy;
-    } else {
-      res.json({error: "Failed to add. Please provide request body"});
-    }
   })
 };
 
 export const addManyPuppies = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 200, async (id: number, collections: any) => { 
-    console.log(req?.body);
-    collections.puppies?.insertMany(req?.body)
-  }
+  if (!req.body) return badReq(res, 'add')
+  await asyncWrapper(req, res, 200,
+    async (id: number, collections: any) => 
+      collections.puppies?.insertMany(req?.body)
+  
 )};
 
 export const updateOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 200, (id: number, collections: any) =>
-    collections.puppies?.findOneAndUpdate({ id }, { $set: req?.body })); //pay attention to set here
+  if (!req.body) return badReq(res, 'update')
+  const image = await fetchPuppyImg(req, res)
+  const newPuppy = { image, ...req.body }; 
+  await asyncWrapper(req, res, 200,
+    async (id: number, collections: any) => 
+      collections.puppies?.findOneAndUpdate({ id }, { $set: newPuppy }, { returnDocument: 'after' })
+  ); //pay attention to set here 
+  
 };
 
-
 export const deleteOnePuppy = async (req: Request, res: Response) => {
-  await asyncWrapper(req, res, 202, (id: number, collections: any) =>
-    collections.puppies?.deleteOne({ id }))
+  await asyncWrapper(req, res, 202,
+    async (id: number, collections: any) =>
+      collections.puppies?.deleteOne({ id }))
 };

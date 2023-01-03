@@ -10,9 +10,9 @@ function App() {
   useEffect(() => {fetchPuppies(setPuppies)}, [])
 
   const updatePuppy: Function = async (id: number, newPuppy: Puppy) => {
-    const newPuppies = puppies.map(p => p.id == id ? newPuppy : p)
+    const newPuppyWithImg = await updatePuppyInDb(id, newPuppy)
+    const newPuppies = puppies.map(p => p.id == id ? newPuppyWithImg?.value : p)
     setPuppies(newPuppies);
-    await updatePuppyInDb(id,newPuppy)
   }
 
   const deletePuppy: Function = async (id:number) => {
@@ -21,15 +21,15 @@ function App() {
   }
 
   const addPupppy: Function = async (newPuppy: Puppy) => {
-    setPuppies([...puppies, newPuppy])
-    await addPuppyInDb(newPuppy)
+    const newPuppyWithImg = await addPuppyInDb(newPuppy)
+    setPuppies([...puppies, newPuppyWithImg])
   }
 
   const PuppyList = () =>
     <main className='puppyContainer'>
-      {puppies?.map(p =>
+      {puppies?.map((p,index) =>
         <PuppyCard
-          key={p?.id}
+          key={index}
           puppy={p}
           deletePuppy={deletePuppy}
           updatePuppy={updatePuppy}

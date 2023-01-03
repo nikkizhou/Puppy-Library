@@ -8,7 +8,7 @@ interface Props {
 
 function PuppyCardDetail({ puppy, closeDetails }: Props) {
   const { name, id, bday, breed, image } = puppy
-  
+
   return(
     <div className='puppyCardDetail'>
       <button className='button_delete' onClick={() => closeDetails() }>X</button>

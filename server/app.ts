@@ -2,7 +2,9 @@ import express from "express";
 import { Application } from 'express';
 import { getPuppies, getPuppy, addOnePuppy, updateOnePuppy, deleteOnePuppy, addManyPuppies } from "./controllers/puppies";
 import cors from 'cors'
+import * as dotenv from "dotenv";
 
+dotenv.config();
 const app: Application = express();
 const port = 5000;
 
@@ -15,8 +17,6 @@ app.post('/api/puppies', addOnePuppy);
 app.put('/api/puppies/:id', updateOnePuppy);
 app.delete('/api/puppies/:id', deleteOnePuppy);
 app.post('/api/puppies/many', addManyPuppies);
-
-
 
 app.listen(port, (): void => {
   console.log(`Listening on port ${port}`);

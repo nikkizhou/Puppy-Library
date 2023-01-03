@@ -1,9 +1,9 @@
 import * as mongoDB from "mongodb";
-import * as dotenv from "dotenv";
+
 
 
 export async function connectToDatabase() {
-  dotenv.config();
+
   const client: mongoDB.MongoClient = new mongoDB.MongoClient(`${process.env.MONGODB_URI}`);
 
   try {

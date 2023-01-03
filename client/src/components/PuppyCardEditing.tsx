@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import { Puppy } from '../interfaces'
-import {InputField2} from './InputField'
+import { InputField2 } from './InputField'
+import Swal from 'sweetalert2'
 
 interface Props {
   puppy: Puppy,
@@ -9,7 +10,7 @@ interface Props {
 }
 
 function PuppyCardEditing({ puppy, updatePuppy, closeEditing }: Props) {
-  const { name, id, bday, breed } = puppy;
+  const { name, id, bday, breed } = puppy || {};
   const [newPuppy, setNewPuppy] = useState(puppy);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +20,11 @@ function PuppyCardEditing({ puppy, updatePuppy, closeEditing }: Props) {
   const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await updatePuppy(id as number, newPuppy);
-    alert("Puppy updated successfully!");
+    Swal.fire({
+      icon: 'success',
+      title: "Puppy updated successfully!",
+      text:"Click details on the puppy card to check the updated image"
+    });
   }
 
   return (

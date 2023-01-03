@@ -2,23 +2,25 @@ import { Puppy } from "../interfaces"
 
 
 export const updatePuppyInDb = async (id: number, newPuppy: Puppy) => {
-  fetch(`/api/puppies/${id}`, {
+  return await fetch(`/api/puppies/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ name: newPuppy.name, bday: newPuppy.bday, bree: newPuppy.breed })
-  }).catch(err => console.log(err))
+    body: JSON.stringify({ name: newPuppy.name, bday: newPuppy.bday, breed: newPuppy.breed })
+  })
+    .then(res => res.json())
+    .catch(err => console.log(err))
 }
 
 
 export const deletePuppyInDb = async (id: number) => {
-  fetch(`/api/puppies/${id}`, { method: 'DELETE' })
+  await fetch(`/api/puppies/${id}`, { method: 'DELETE' })
     .catch(err => console.log(err))
 }
 
 export const addPuppyInDb = async (newPuppy: Puppy) => {
-  fetch('/api/puppies', {
+  return await fetch('/api/puppies', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(newPuppy)
@@ -28,7 +30,7 @@ export const addPuppyInDb = async (newPuppy: Puppy) => {
 }
 
 export const fetchPuppies = async (setPuppies:Function) => {
-  fetch('/api/puppies')
+  await fetch('/api/puppies')
     .then((response) => response.json())
     .then((data) => setPuppies(data))
 }
