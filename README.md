@@ -5,7 +5,8 @@ A fullstack app with CRUD operations related to mongodb database.
 User can add, edit, delete and check details of the puppies in the library.
 The picture of the puppy is fetched from dog.ceo api based on the breed of the dog.
 
-## Tech Stack: MERN stack, typescript  
+## Tech Stack:   
+MERN stack(MongoDb, Express, Reat, NodeJs) , typescript  
 
 ## API route
 |               |  Method |  Route           |
